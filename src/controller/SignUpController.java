@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -14,29 +15,39 @@ import javax.servlet.http.HttpServletResponse;
 
 import utility.ConnectionManager;
 
-
-
-@WebServlet(urlPatterns= {"/signup"})
+@WebServlet(urlPatterns = { "/signup" })
 public class SignUpController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
 
-    public SignUpController() {
-        super();
-       
-    }
+	public SignUpController() {
+		super();
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Sign up Controller");
-		// Fill your code here
-		RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/signupView.jsp");
-		rd.forward(request,response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		doGet(request,response);
-		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("Sign up Controller");
+		// Fill your code here
+		Connection connection = null;
+		try {
+			connection = ConnectionManager.getConnection();
+		} catch (ClassNotFoundException | IOException | SQLException e) {
+			e.printStackTrace();
+		}
+		if (connection != null) {
+			System.out.println("Connection Established!!");
+		} else {
+			System.out.println("Check your Connection");
+		}
+		RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/views/signupView.jsp");
+		rd.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		doGet(request, response);
+
 	}
 
 }
